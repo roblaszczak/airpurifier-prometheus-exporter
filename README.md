@@ -1,6 +1,6 @@
 # Xiaomi Air Purifier 2 Prometheus Exporter
 
-![Dashboard preview](/docs/dashboard-preview.png)
+![Dashboard preview](https://github.com/roblaszczak/airpurifier-prometheus-exporter/blob/master/docs/dashboard-preview.png?raw=true)
 
 Some crazy idea made after too much of yerba.
 
