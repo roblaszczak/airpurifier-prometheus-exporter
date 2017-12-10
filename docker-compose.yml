@@ -1,0 +1,43 @@
+version: '3.1'
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./airpurifier_exporter:/opt/airpurifier-prometheus/airpurifier_exporter
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - AIRPURIFIER_DEBUG=false
+      - AIRPURIFIER_EXPORTER_PORT=8000
+      - AIRPURIFIER_FORECASTIO_API_KEY= # you can get API Key here: https://darksky.net/dev/
+      - AIRPURIFIER_LOCATION_LAT=
+      - AIRPURIFIER_LOCATION_LNG=
+      - AIRPURIFIER_AIRLY_API_KEY= # you can get API Key here: https://developer.airly.eu/
+
+      # - AIRPURIFIER_IP= optional (by default device will be discovered)
+      # - AIRPURIFIER_TOKEN= optional (by default device will be discovered)
+    network_mode: "host"
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:v2.0.0
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    network_mode: "host"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
+    network_mode: "host"
