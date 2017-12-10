@@ -12,7 +12,7 @@ Just run
 
     docker-compose up
 
-Do daemonize run
+or if you want to run in background
 
     docker-compose up -d
 
